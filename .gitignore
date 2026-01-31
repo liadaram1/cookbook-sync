@@ -1,0 +1,83 @@
+# ===================
+# Python / Backend
+# ===================
+
+# Byte-compiled / optimized files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Testing / coverage
+.pytest_cache/
+.coverage
+htmlcov/
+coverage.xml
+
+# Type checking
+.mypy_cache/
+
+# ===================
+# Node.js / Frontend
+# ===================
+
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+dist-ssr/
+
+# Vite
+*.local
+
+# Logs
+*.log
+npm-debug.log*
+
+# TypeScript
+*.tsbuildinfo
+
+# ESLint cache
+.eslintcache
+
+# ===================
+# IDE / Editor
+# ===================
+
+# VS Code
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+
+# JetBrains
+.idea/
+
+# Vim
+*.swp
+*.swo
+
+# ===================
+# OS Generated
+# ===================
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+[Dd]esktop.ini
+
+# ===================
+# Environment / Secrets
+# ===================
+
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
