@@ -4,9 +4,12 @@ from datetime import datetime
 import uuid
 
 
-class RecipeBase(BaseModel):
-    """Base model for Recipe with common fields."""
+class Recipe(BaseModel):
+    """Recipe model with all fields."""
 
+    id: str = Field(
+        default_factory=lambda: str(uuid.uuid4()), description="Unique recipe ID"
+    )
     title: str = Field(..., min_length=1, max_length=200, description="Recipe title")
     description: str = Field(
         ..., max_length=1000, description="Brief description of the recipe"
@@ -15,31 +18,12 @@ class RecipeBase(BaseModel):
     instructions: str = Field(..., min_length=1, description="Cooking instructions")
     cooking_time: int = Field(..., gt=0, description="Cooking time in minutes")
     servings: int = Field(..., gt=0, description="Number of servings")
-
-
-class RecipeCreate(RecipeBase):
-    """Model for creating a new recipe."""
-
-    pass
-
-
-class RecipeUpdate(BaseModel):
-    """Model for updating an existing recipe. All fields are optional."""
-
-    title: Optional[str] = Field(None, min_length=1, max_length=200)
-    description: Optional[str] = Field(None, max_length=1000)
-    ingredients: Optional[List[str]] = Field(None, min_items=1)
-    instructions: Optional[str] = Field(None, min_length=1)
-    cooking_time: Optional[int] = Field(None, gt=0)
-    servings: Optional[int] = Field(None, gt=0)
-
-
-class Recipe(RecipeBase):
-    """Complete Recipe model with all fields including id and timestamps."""
-
-    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
-    created_at: datetime = Field(default_factory=datetime.utcnow)
-    updated_at: datetime = Field(default_factory=datetime.utcnow)
+    created_at: datetime = Field(
+        default_factory=datetime.utcnow, description="Creation timestamp"
+    )
+    updated_at: datetime = Field(
+        default_factory=datetime.utcnow, description="Last update timestamp"
+    )
 
     class Config:
         json_schema_extra = {

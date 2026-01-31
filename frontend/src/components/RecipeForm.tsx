@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import type { Recipe, RecipeCreate, RecipeUpdate } from '../types/Recipe';
+import type { Recipe } from '../types/Recipe';
 import { recipeService } from '../services/api';
 
 export default function RecipeForm() {
@@ -8,7 +8,7 @@ export default function RecipeForm() {
   const navigate = useNavigate();
   const isEditing = Boolean(id);
 
-  const [formData, setFormData] = useState<RecipeCreate>({
+  const [formData, setFormData] = useState<Recipe>({
     title: '',
     description: '',
     ingredients: [''],
@@ -53,7 +53,7 @@ export default function RecipeForm() {
     // Filter out empty ingredients
     const cleanedData = {
       ...formData,
-      ingredients: formData.ingredients.filter(ing => ing.trim() !== ''),
+      ingredients: formData.ingredients.filter((ing: string) => ing.trim() !== ''),
     };
 
     if (cleanedData.ingredients.length === 0) {
@@ -66,7 +66,7 @@ export default function RecipeForm() {
       setError(null);
 
       if (isEditing && id) {
-        await recipeService.update(id, cleanedData as RecipeUpdate);
+        await recipeService.update(id, cleanedData);
         navigate(`/recipes/${id}`);
       } else {
         const newRecipe = await recipeService.create(cleanedData);
@@ -84,7 +84,7 @@ export default function RecipeForm() {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value, type } = e.target;
-    setFormData(prev => ({
+    setFormData((prev: Recipe) => ({
       ...prev,
       [name]: type === 'number' ? parseInt(value) || 0 : value,
     }));
@@ -93,11 +93,11 @@ export default function RecipeForm() {
   const handleIngredientChange = (index: number, value: string) => {
     const newIngredients = [...formData.ingredients];
     newIngredients[index] = value;
-    setFormData(prev => ({ ...prev, ingredients: newIngredients }));
+    setFormData((prev: Recipe) => ({ ...prev, ingredients: newIngredients }));
   };
 
   const addIngredient = () => {
-    setFormData(prev => ({
+    setFormData((prev: Recipe) => ({
       ...prev,
       ingredients: [...prev.ingredients, ''],
     }));
@@ -105,9 +105,9 @@ export default function RecipeForm() {
 
   const removeIngredient = (index: number) => {
     if (formData.ingredients.length > 1) {
-      setFormData(prev => ({
+      setFormData((prev: Recipe) => ({
         ...prev,
-        ingredients: prev.ingredients.filter((_, i) => i !== index),
+        ingredients: prev.ingredients.filter((_: string, i: number) => i !== index),
       }));
     }
   };
@@ -219,7 +219,7 @@ export default function RecipeForm() {
               Ingredients *
             </label>
             <div className="space-y-2">
-              {formData.ingredients.map((ingredient, index) => (
+              {formData.ingredients.map((ingredient: string, index: number) => (
                 <div key={index} className="flex gap-2">
                   <input
                     type="text"

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { Recipe, RecipeCreate, RecipeUpdate } from '../types/Recipe';
+import type { Recipe } from '../types/Recipe';
 
 const API_BASE_URL = 'http://localhost:8000/api';
 
@@ -24,13 +24,13 @@ export const recipeService = {
   },
 
   // Create a new recipe
-  create: async (recipe: RecipeCreate): Promise<Recipe> => {
+  create: async (recipe: Recipe): Promise<Recipe> => {
     const response = await api.post<Recipe>('/recipes', recipe);
     return response.data;
   },
 
   // Update an existing recipe
-  update: async (id: string, recipe: RecipeUpdate): Promise<Recipe> => {
+  update: async (id: string, recipe: Recipe): Promise<Recipe> => {
     const response = await api.put<Recipe>(`/recipes/${id}`, recipe);
     return response.data;
   },

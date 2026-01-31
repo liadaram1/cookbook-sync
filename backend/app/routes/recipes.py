@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, status
 from typing import List
-from app.models import Recipe, RecipeCreate, RecipeUpdate
+from app.models import Recipe
 from app.store import recipe_store
 
 router = APIRouter(prefix="/api/recipes", tags=["recipes"])
@@ -25,13 +25,13 @@ async def get_recipe(recipe_id: str):
 
 
 @router.post("", response_model=Recipe, status_code=status.HTTP_201_CREATED)
-async def create_recipe(recipe_data: RecipeCreate):
+async def create_recipe(recipe_data: Recipe):
     """Create a new recipe."""
     return recipe_store.create(recipe_data)
 
 
 @router.put("/{recipe_id}", response_model=Recipe)
-async def update_recipe(recipe_id: str, recipe_data: RecipeUpdate):
+async def update_recipe(recipe_id: str, recipe_data: Recipe):
     """Update an existing recipe."""
     updated_recipe = recipe_store.update(recipe_id, recipe_data)
     if not updated_recipe:

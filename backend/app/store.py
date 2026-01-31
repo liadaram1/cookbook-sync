@@ -1,6 +1,6 @@
 from typing import Dict, List, Optional
 from datetime import datetime
-from app.models import Recipe, RecipeCreate, RecipeUpdate
+from app.models import Recipe
 import uuid
 
 
@@ -14,7 +14,7 @@ class RecipeStore:
     def _initialize_sample_data(self):
         """Add some sample recipes for testing."""
         sample_recipes = [
-            RecipeCreate(
+            Recipe(
                 title="Classic Margherita Pizza",
                 description="A simple and delicious Italian pizza with fresh tomatoes, mozzarella, and basil",
                 ingredients=[
@@ -29,7 +29,7 @@ class RecipeStore:
                 cooking_time=20,
                 servings=4,
             ),
-            RecipeCreate(
+            Recipe(
                 title="Chicken Stir Fry",
                 description="Quick and healthy Asian-inspired chicken stir fry with vegetables",
                 ingredients=[
@@ -45,7 +45,7 @@ class RecipeStore:
                 cooking_time=15,
                 servings=4,
             ),
-            RecipeCreate(
+            Recipe(
                 title="Chocolate Chip Cookies",
                 description="Soft and chewy homemade chocolate chip cookies",
                 ingredients=[
@@ -76,7 +76,7 @@ class RecipeStore:
         """Get a recipe by ID."""
         return self._recipes.get(recipe_id)
 
-    def create(self, recipe_data: RecipeCreate) -> Recipe:
+    def create(self, recipe_data: Recipe) -> Recipe:
         """Create a new recipe."""
         recipe = Recipe(
             id=str(uuid.uuid4()),
@@ -92,21 +92,20 @@ class RecipeStore:
         self._recipes[recipe.id] = recipe
         return recipe
 
-    def update(self, recipe_id: str, recipe_data: RecipeUpdate) -> Optional[Recipe]:
+    def update(self, recipe_id: str, recipe_data: Recipe) -> Optional[Recipe]:
         """Update an existing recipe."""
         existing_recipe = self._recipes.get(recipe_id)
         if not existing_recipe:
             return None
 
-        update_data = recipe_data.model_dump(exclude_unset=True)
         updated_recipe = Recipe(
             id=existing_recipe.id,
-            title=update_data.get("title", existing_recipe.title),
-            description=update_data.get("description", existing_recipe.description),
-            ingredients=update_data.get("ingredients", existing_recipe.ingredients),
-            instructions=update_data.get("instructions", existing_recipe.instructions),
-            cooking_time=update_data.get("cooking_time", existing_recipe.cooking_time),
-            servings=update_data.get("servings", existing_recipe.servings),
+            title=recipe_data.title,
+            description=recipe_data.description,
+            ingredients=recipe_data.ingredients,
+            instructions=recipe_data.instructions,
+            cooking_time=recipe_data.cooking_time,
+            servings=recipe_data.servings,
             created_at=existing_recipe.created_at,
             updated_at=datetime.utcnow(),
         )
